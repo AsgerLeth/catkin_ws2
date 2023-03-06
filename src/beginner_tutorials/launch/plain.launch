@@ -1,0 +1,12 @@
+<launch>
+    <!-- START A GROUP WITH A NAMESPACE -->
+    <group ns="mrp">
+        <!-- LAUNCH A "Spinner Python" NODE -->
+        <node
+            pkg    = "beginner_tutorials"
+            name   = "spinner_py_node"
+            output = "screen"
+            type   = "spinner_py_node.py"
+        />
+    </group>
+</launch>

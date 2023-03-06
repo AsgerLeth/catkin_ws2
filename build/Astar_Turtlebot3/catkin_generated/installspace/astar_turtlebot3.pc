@@ -1,0 +1,8 @@
+prefix=/home/asger/catkin_ws/install
+
+Name: astar_turtlebot3
+Description: Description of astar_turtlebot3
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

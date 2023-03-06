@@ -1,0 +1,8 @@
+prefix=/home/asger/catkin_ws/install
+
+Name: a-star-turtlebot
+Description: Description of a-star-turtlebot
+Version: 1.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: rospy geometry_msgs
