@@ -5,6 +5,7 @@ import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import random
 from std_msgs.msg import String
+from std_msgs.msg import Float32MultiArray
 import rosnode
 
 # Callbacks definition
@@ -24,12 +25,16 @@ def done_cb(status, result):
         rospy.loginfo("Goal cancelled")
     if status == 4:
         rospy.loginfo("Goal aborted")
-        pub.publish(name + " can't reach the goal")
     
 
 def callback(data):
-    rospy.loginfo(name + " heard \"%s\"", data.data)
-
+    #rospy.loginfo(name + " heard \"%s\"", data.data)
+    print(name, "heard: i = %d, x = %g, y = %g, sleep_time = %g" % (data.data[0], data.data[1], data.data[2], data.data[3]))
+    print(data.data)
+    task = [int(data.data[0]), round(data.data[1], 2), round(data.data[2], 2), int(data.data[3])]
+    print(task)
+    current_task(task[0], task[1], task[2], task[3])
+    #print(name, "heard: data[0]=", data[0], "data.data[1]=", data[1])
 
 
 rospy.init_node('goal_pose')
@@ -44,11 +49,11 @@ turtlebot_names = ["tb3_0", "tb3_1", "tb3_2"]
 for i in range (len(turtlebot_names)):
     #print(turtlebot_names[i])
     if turtlebot_names[i] not in name:
-        rospy.Subscriber(turtlebot_names[i], String, callback)
+        rospy.Subscriber(turtlebot_names[i], Float32MultiArray, callback)
         print("Subscribed to", turtlebot_names[i])
 
 
-pub = rospy.Publisher(name, String, queue_size = 10)
+pub = rospy.Publisher(name, Float32MultiArray, queue_size = 10)
 
 def current_task(i, x_coordinate, y_coordinate, sleep_time):
     
@@ -71,12 +76,15 @@ def current_task(i, x_coordinate, y_coordinate, sleep_time):
 
 
     navclient.send_goal(goal, done_cb, active_cb, feedback_cb)
-    finished = navclient.wait_for_result(rospy.Duration(40))
+    finished = navclient.wait_for_result(rospy.Duration(35))
 
 
     if not finished:
         rospy.logerr("Can't reach goal")
-        pub.publish(name + " can't reach the goal")
+        #pub.publish(name + " can't reach the goal")
+        task = Float32MultiArray()
+        task.data = [i, x_coordinate, y_coordinate, sleep_time]
+        pub.publish(task)
     else:
         rospy.loginfo(navclient.get_result())
     
