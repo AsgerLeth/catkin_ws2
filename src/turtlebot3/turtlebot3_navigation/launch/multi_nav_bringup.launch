@@ -21,4 +21,5 @@
   <!-- rviz -->
     <node pkg="rviz" type="rviz" name="rviz" required="true"
           args="-d $(find turtlebot3_navigation)/rviz/multi_turtlebot3_navigation.rviz"/>
+    
 </launch>

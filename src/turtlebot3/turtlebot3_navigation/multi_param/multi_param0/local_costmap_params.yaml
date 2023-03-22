@@ -4,8 +4,7 @@ local_costmap:
 
   global_frame: map # tb3_0/odom
   robot_base_frame: tb3_0/base_footprint
-  static_map: false
-  rolling_window: true
+
 
   update_frequency: 10.0
   publish_frequency: 10.0
