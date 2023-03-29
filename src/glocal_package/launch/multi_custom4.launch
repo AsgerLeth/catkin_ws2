@@ -1,0 +1,33 @@
+<launch>
+    <include file="$(find glocal_package)/launch/multi_glocal4_launch.launch"/>
+    <include file="$(find glocal_package)/launch/tb3_0_move_base.launch">
+        <arg name="config_file" value="$(find glocal_package)/config/tb3_0_move_base_config.yaml"/>
+    </include>
+    <include file="$(find glocal_package)/launch/tb3_1_move_base.launch">
+        <arg name="config_file" value="$(find glocal_package)/config/tb3_1_move_base_config.yaml"/>
+    </include>
+    <include file="$(find glocal_package)/launch/tb3_2_move_base.launch">
+        <arg name="config_file" value="$(find glocal_package)/config/tb3_2_move_base_config.yaml"/>
+    </include>
+    <include file="$(find glocal_package)/launch/tb3_3_move_base.launch">
+        <arg name="config_file" value="$(find glocal_package)/config/tb3_3_move_base_config.yaml"/>
+    </include>
+    <include file="$(find glocal_package)/launch/multi_turtlebot3_slam.launch">
+        <arg name="ns" value="tb3_0"/>
+    </include>
+    <include file="$(find glocal_package)/launch/multi_turtlebot3_slam.launch">
+        <arg name="ns" value="tb3_2"/>
+    </include>
+    <include file="$(find glocal_package)/launch/multi_turtlebot3_slam.launch">
+        <arg name="ns" value="tb3_1"/>
+    </include>
+    <include file="$(find glocal_package)/launch/multi_turtlebot3_slam.launch">
+        <arg name="ns" value="tb3_3"/>
+    </include>
+    <include file="$(find glocal_package)/launch/multi_turtlebot3_slam.launch">
+        <arg name="ns" value="tb3_4"/>
+    </include>
+    <include file="$(find glocal_package)/launch/multi_map_merge.launch"/>
+    <include file ="$(find turtlebot3_navigation)/launch/multi_nav_bringup4.launch"/>
+    <!-- <include file="$(find glocal_package)/launch/glocal_package_rviz.launch" -->
+</launch>

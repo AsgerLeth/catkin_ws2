@@ -1,0 +1,4 @@
+global_costmap:
+  map_topic: /tb3_3/filtered_map  
+local_costmap:
+  map_topic: /tb3_3/filtered_map  

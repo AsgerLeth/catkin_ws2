@@ -2,7 +2,7 @@ local_costmap:
 
   footprint: [[-0.205, -0.155], [-0.205, 0.155], [0.077, 0.155], [0.077, -0.155]]
 
-  global_frame: map # tb3_2/odom
+  global_frame: tb3_3/odom
   robot_base_frame: tb3_3/base_footprint
   static_map: false
   rolling_window: true

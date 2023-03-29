@@ -10,7 +10,16 @@
   <arg name="third_tb3" default="tb3_2" />
   <arg name="fourth_tb3" default="tb3_3" />
 
-  <group ns = "$(arg first_tb3)">
+  <!-- Turtlebot3 -->
+  <!--
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
+    <arg name="model" value="$(arg model)" />
+    <arg name="multi_robot_name" value="$(arg second_tb3)" />
+  </include>
+  -->
+
+  
+  <group ns = "$(arg fourth_tb3)">
   <!-- Map server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
@@ -26,9 +35,9 @@
    <param name="transform_tolerance"       value="0.5"/>
    <param name="recovery_alpha_slow"       value="0.00"/>
    <param name="recovery_alpha_fast"       value="0.00"/>
-   <param name="initial_pose_x"            value="1.0"/>
-   <param name="initial_pose_y"            value="1.0"/>
-   <param name="initial_pose_a"            value="1.51"/>
+   <param name="initial_pose_x"            value="3.0"/>
+   <param name="initial_pose_y"            value="4.0"/>
+   <param name="initial_pose_a"            value="0.043"/>
    <param name="gui_publish_rate"          value="50.0"/>
 
    <remap from="scan"                      to="scan"/>
@@ -48,8 +57,8 @@
    <param name="odom_alpha2"               value="0.1"/>
    <param name="odom_alpha3"               value="0.1"/>
    <param name="odom_alpha4"               value="0.1"/>
-   <param name="odom_frame_id"             value="/$(arg first_tb3)/odom"/>
-   <param name="base_frame_id"             value="/$(arg first_tb3)/base_footprint"/>
+   <param name="odom_frame_id"             value="/$(arg fourth_tb3)/odom"/>
+   <param name="base_frame_id"             value="/$(arg fourth_tb3)/base_footprint"/>
 
  </node>
 
@@ -63,13 +72,14 @@
   <!-- move_base -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
-    <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param0/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param0/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param0/move_base_params.yaml" command="load" />
-    <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param0/dwa_local_planner_params_$(arg model).yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param3/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param3/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param3/move_base_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param3/dwa_local_planner_params_$(arg model).yaml" command="load" />
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <remap from="odom" to="$(arg odom_topic)"/>
     <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find glocal_package)/config/rosconsole.yaml"/>
   </node>
   </group>
 

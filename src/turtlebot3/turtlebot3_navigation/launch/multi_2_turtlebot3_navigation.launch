@@ -8,7 +8,7 @@
   <arg name="first_tb3" default="tb3_0" />
   <arg name="second_tb3" default="tb3_1" />
   <arg name="third_tb3" default="tb3_2" />
-
+  <arg name="fourth_tb3" default="tb3_3" />
   <!-- Turtlebot3 -->
   <!--
   <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
@@ -34,8 +34,8 @@
    <param name="transform_tolerance"       value="0.5"/>
    <param name="recovery_alpha_slow"       value="0.00"/>
    <param name="recovery_alpha_fast"       value="0.00"/>
-   <param name="initial_pose_x"            value="1.125"/>
-   <param name="initial_pose_y"            value="3.272"/>
+   <param name="initial_pose_x"            value="7.0"/>
+   <param name="initial_pose_y"            value="7.0"/>
    <param name="initial_pose_a"            value="0.043"/>
    <param name="gui_publish_rate"          value="50.0"/>
 

@@ -1,0 +1,17 @@
+<launch>
+  <arg name="cmd_vel_topic" default="cmd_vel"/>
+  <arg name="odom_topic" default="odom"/>
+  <arg name="map_topic" default="map"/>
+  <arg name="use_dwa" default="true"/>
+  <arg name="map_file" default="$(find turtlebot3_navigation)/maps/blank_map.yaml"/>
+  <arg name="use_sim_time" default="true"/>
+
+  <include file="$(find turtlebot3_navigation)/launch/move_base.launch">
+    <arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)"/>
+    <arg name="odom_topic" value="$(arg odom_topic)"/>
+  </include>
+
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)">
+    <param name="use_sim_time" value="$(arg use_sim_time)"/>
+  </node>
+</launch>
