@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 import actionlib
@@ -6,9 +6,42 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import random
 from std_msgs.msg import String
 import rosnode
+import csv
+import time
 
 # Callbacks definition
+def log_to_csv():
+    # Check if the log file exists, and if not, create it with header row
+    try:
+        with open('log.csv') as f:
+            pass
+    except FileNotFoundError:
+        with open('log.csv', 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Run', 'Time (s)'])
 
+    # Read the latest run number from the log file and increment it by one
+    with open('log.csv', 'r') as f:
+        reader = csv.reader(f)
+        next(reader, None)  # Skip the header row
+        runs = [int(row[0]) for row in reader]
+        if runs:
+            latest_run = max(runs)
+        else:
+            latest_run = 0
+        run_number = latest_run + 1
+
+    # Run the script and time it
+    start_time = time.time()
+    # ... Your script code goes here ...
+    end_time = time.time()
+    run_time = round(end_time - start_time, 2)
+
+    # Write the run number and time to the log file
+    with open('log.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([run_number, run_time])
+    
 def active_cb():
     rospy.loginfo("Goal pose being processed")
 
@@ -86,16 +119,25 @@ def current_task(i, x_coordinate, y_coordinate, sleep_time):
     rospy.sleep(sleep_time)
 
 def task_list(tasks_seed):
-    
+    log_to_csv()
     random.seed(str(tasks_seed) + name)
 
     no_of_tasks = 4
-
+    start_time = time.time()
     for i in range (1, no_of_tasks+1):
         x_coordinate = round(random.uniform(0.5, 9.5), 1)
         y_coordinate = round(random.uniform(0.5, 9.5), 1)
         sleep_time = random.randint(3, 8)
         
         current_task(i, x_coordinate, y_coordinate, sleep_time)
+    end_time = time.time()
+    run_time = round(end_time - start_time, 2)
+    print("Run completed in", run_time, "seconds")
+    log_to_csv()
+    
+
+# Call the log_to_csv() function to log the completion time and run number to a CSV file
+
+
 
 task_list(1)
