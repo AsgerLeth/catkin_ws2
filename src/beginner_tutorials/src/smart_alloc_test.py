@@ -46,8 +46,6 @@ def done_cb(status, result):
         impossible_tasks.data.append(tasks.data[task_index])
 
 def callback(message: Float32MultiArray):
-    global message_count
-    message_count += 1
     if (message.data[0] == 0):
         responder(message.data[1], message.data[2])
     
@@ -60,6 +58,8 @@ def callback(message: Float32MultiArray):
     elif (message.data[0] == 3):
         finished_task = Float32MultiArray(data = [round(message.data[1], 2), round(message.data[2], 2), int(message.data[3])])
         if finished_task.data not in completed_tasks.data[int(message.data[4])]:
+            global message_count
+            message_count += 1
             completed_tasks.data[int(message.data[4])].append(finished_task.data)
             print("tasks completed by", turtlebot_names[int(message.data[4])], "= ", completed_tasks.data[int(message.data[4])])
 
@@ -67,6 +67,8 @@ def callback(message: Float32MultiArray):
         update_ongoing_tasks(round(message.data[1], 2), round(message.data[2], 2), int(message.data[3]), int(message.data[4]))
     
     elif (message.data[0] == 5):
+        global message_count
+        message_count += 1
         done.data.append(message.data[1])
 
 rospy.init_node('goal_pose')
@@ -98,9 +100,13 @@ message_count = 0
 done = Float32MultiArray()
 
 def update_ongoing_tasks(x, y, h, robot_number):
+    global message_count
+    message_count += 1
     ongoing_tasks.data[robot_number] = [x, y, h]
 
 def put_task_in_list(x, y, h):
+    global message_count
+    message_count += 1
     task = Float32MultiArray(data = [x, y, h])
     not_in_list = True
     for i in range(len(tasks.data)):
@@ -113,6 +119,8 @@ def put_task_in_list(x, y, h):
     
 def check_range(robot_number, failed_task_index):
     if turtlebot_names.index(name) == robot_number:
+        global message_count
+        message_count += 1
         #print(name)
         print("Failed task index =", failed_task_index)
         print("Task list length =", len(tasks.data))
@@ -120,7 +128,9 @@ def check_range(robot_number, failed_task_index):
         pub.publish(failed_task)
 
 def responder(robot_number, failed_task_index):
-    pos = Float32MultiArray(data = [1, robot_number, failed_task_index])
+    global message_count
+    message_count += 1
+    pos = Float32MultiArray(data = [1, robot_number, failed_task_index, turtlebot_names.index(name)])
     pub.publish(pos)
 
 def log_to_csv(run_time):
