@@ -13,6 +13,8 @@ import csv
 import time
 import math
 
+seed_run = 1
+
 # Callbacks definition
 
 def active_cb():
@@ -44,6 +46,8 @@ def done_cb(status, result):
         impossible_tasks.data.append(tasks.data[task_index])
 
 def callback(message: Float32MultiArray):
+    global message_count
+    message_count += 1
     if (message.data[0] == 0):
         responder(message.data[1], message.data[2])
     
@@ -89,10 +93,7 @@ ongoing_tasks = Float32MultiArray(data = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0
 completed_tasks = Float32MultiArray()
 completed_tasks.data = [[], [], [], [], []]
 
-print(completed_tasks)
-print(turtlebot_names.index(name))
-print(completed_tasks.data[turtlebot_names.index(name)])
-print(len(completed_tasks.data[turtlebot_names.index(name)]))
+message_count = 0
 
 done = Float32MultiArray()
 
@@ -146,7 +147,7 @@ def log_to_csv(run_time):
     # Write the run number and time to the log file
     with open('log.csv', 'a', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow([run_number, run_time])
+        writer.writerow([run_number, seed_run, name, run_time, message_count])
 
 def closest_task():
     min_dist = 13.0
@@ -306,26 +307,26 @@ def task_list(tasks_seed):
         ((  0,  10), (5.3,  10))]
 
     allowed_areas_Blocks = [
-        ((  0, 1.3), (  0,  10)),
-        ((1.3,  10), (8.8,  10)),
-        ((8.7,  10), (1.2,  10)),
-        ((2.6, 8.7), (  0, 1.8)),
-        ((1.3, 2.5), (  0, 1.2)),
-        ((1.3, 8.7), (5.7, 7.3)),
-        ((4.5, 6.1), (7.3, 8.8)),
-        ((6.2, 8.8), (3.2, 5.7)),
-        ((2.6, 4.8), (1.8, 5.7)),
-        ((4.8,   7), (1.8, 4.1))]
+        ((  0,  10), (  0, 1.3)),
+        ((8.8,  10), (1.3,  10)),
+        ((1.2,  10), (8.7,  10)),
+        ((  0, 1.8), (2.6, 8.7)),
+        ((  0, 1.2), (1.3, 2.5)),
+        ((5.7, 7.3), (1.3, 8.7)),
+        ((7.3, 8.8), (4.5, 6.1)),
+        ((3.2, 5.7), (6.2, 8.8)),
+        ((1.8, 5.7), (2.6, 4.8)),
+        ((1.8, 4.1), (4.8,   7))]
 
     allowed_areas_Maze = [
-        ((  0, 1.5), (  0,  10)),
-        ((  2, 3.7), (  0, 6.2)),
-        ((  2, 3.7), (6.9,  10)),
-        ((3.7,  10), (  0, 1.8)),
-        ((3.7, 7.9), (2.1, 4.2)),
-        ((  4, 5.7), (4.9,  10)),
-        ((6.3, 7.9), (2.3,  10)),
-        ((8.4,  10), (2.3,  10))]
+        ((  0,  10), (  0, 1.5)),
+        ((  0, 6.2), (  2, 3.7)),
+        ((6.9,  10), (  2, 3.7)),
+        ((  0, 1.8), (3.7,  10)),
+        ((2.1, 4.2), (3.7, 7.9)),
+        ((4.9,  10), (  4, 5.7)),
+        ((2.3,  10), (6.3, 7.9)),
+        ((2.3,  10), (8.4,  10))]
 
     generate_spawn_positions(no_of_tasks, allowed_areas_Middle_wall, tasks_seed)
     do_tasks()
@@ -355,4 +356,4 @@ def task_list(tasks_seed):
     log_to_csv(run_time)
 
 
-task_list(1)
+task_list(seed_run)
