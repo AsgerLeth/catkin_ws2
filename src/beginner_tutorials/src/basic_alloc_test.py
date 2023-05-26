@@ -178,6 +178,7 @@ def do_tasks():
 
         if tasks.data[i] in impossible_tasks.data:
             print(name + " skipped task, since it was impossible")
+            i += 1
             continue
         
         skip_task = False
@@ -186,10 +187,12 @@ def do_tasks():
                 if (tasks.data[i] == completed_tasks.data[n][m]):
                     skip_task = True
         if (skip_task):
+            i += 1
             continue
 
         if(tasks.data[n] in ongoing_tasks.data):
             print("Another robot is doing that task!")
+            i += 1
             continue
 
         distance = math.dist([x_start, y_start], [tasks.data[n][0], tasks.data[n][1]])
@@ -234,7 +237,7 @@ def do_tasks():
 
         print("ongoing tasks:", ongoing_tasks.data)
 
-        finished = navclient.wait_for_result(rospy.Duration(max_task_duration))
+        finished = navclient.wait_for_result(rospy.Duration(70))
 
         print("finished:",finished)
 
